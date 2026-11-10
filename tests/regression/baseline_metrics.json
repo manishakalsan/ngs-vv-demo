@@ -1,0 +1,22 @@
+{
+  "by_type": {
+    "INDEL": {
+      "TP": 12,
+      "FP": 0,
+      "FN": 0,
+      "GT_mismatch": 0,
+      "PPA": 1.0,
+      "PPV": 1.0
+    },
+    "SNV": {
+      "TP": 40,
+      "FP": 0,
+      "FN": 0,
+      "GT_mismatch": 0,
+      "PPA": 1.0,
+      "PPV": 1.0
+    }
+  },
+  "false_positives": [],
+  "false_negatives": []
+}

@@ -1,0 +1,28 @@
+# GIAB HG002 benchmark on a chr20 slice (GRCh38). Layered on config/config.yaml.
+# Prepare data first:  bash scripts/fetch_giab.sh
+pipeline_version: "1.0.0"
+outdir: results_giab
+threads: 4
+
+run_samples: [HG002]   # config files merge; without this SYNTH1 would run too
+samples:
+  HG002:
+    r1: data/giab/HG002_R1.fastq.gz
+    r2: data/giab/HG002_R2.fastq.gz
+
+reference: data/giab/chr20.fa
+expected_contigs: ["chr20:64444167"]   # GRCh38 chr20; a GRCh37 or "20"-named reference fails REQ-003
+
+truth_vcf: data/giab/truth.vcf.gz
+confident_bed: data/giab/confident.bed
+target_bed: data/giab/region.bed   # call only inside the slice
+
+fastp:
+  qualified_quality: 20
+  min_length: 50
+
+caller:
+  min_mapq: 20
+  min_baseq: 20
+  min_qual: 20
+  call_indels: true

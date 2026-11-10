@@ -1,0 +1,55 @@
+# Single source of truth for requirements.
+# docs/requirements.md explains them; scripts/build_traceability.py reads THIS
+# file plus test results to generate the traceability matrix.
+# risk: H = a failure could produce a wrong or missing result silently
+#       M = a failure is visible (crash, slow) but blocks the user
+#       L = cosmetic / housekeeping
+
+- id: REQ-001
+  text: Pipeline accepts paired-end gzipped FASTQ and produces an indexed VCF
+  type: functional
+  risk: M
+- id: REQ-002
+  text: Pipeline rejects malformed, truncated, empty, missing or unpaired FASTQ before alignment, with an error naming the file
+  type: input safety
+  risk: H
+- id: REQ-003
+  text: Pipeline rejects a reference whose contigs do not match the expected genome build or region BED, before alignment
+  type: input safety
+  risk: H
+- id: REQ-004
+  text: SNV PPA >= 0.99 and PPV >= 0.99 against truth in confident regions
+  type: performance claim
+  risk: H
+- id: REQ-005
+  text: Indel PPA >= 0.95 and PPV >= 0.95 against truth in confident regions
+  type: performance claim
+  risk: H
+- id: REQ-006
+  text: Identical input and config produce identical variant records across repeated runs and thread counts
+  type: repeatability
+  risk: H
+- id: REQ-007
+  text: Test dataset completes in <= 120 s wall time on 2 cores
+  type: performance
+  risk: M
+- id: REQ-008
+  text: Every variant on the critical-variant list is called with FILTER=PASS and the correct genotype
+  type: performance claim
+  risk: H
+- id: REQ-009
+  text: Output VCF is sorted, normalised (left-aligned, biallelic) and calls below the QUAL threshold are FILTER=LowQual
+  type: output format
+  risk: M
+- id: REQ-010
+  text: Every run records the versions of all software components used
+  type: configuration management
+  risk: M
+- id: REQ-011
+  text: The evaluation code computes TP, FP, FN, PPA and PPV correctly (validation of the test tool itself)
+  type: tool validation
+  risk: H
+- id: REQ-012
+  text: Variants outside confident regions are excluded from accuracy metrics
+  type: tool validation
+  risk: M

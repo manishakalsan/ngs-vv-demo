@@ -1,0 +1,17 @@
+# Human-readable, version-pinned environment. Used by CI.
+# For a bit-for-bit identical env on linux-64 use envs/conda-linux-64.lock.
+name: ngs-vv-demo
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.11
+  - snakemake-minimal=8.30.0
+  - fastp=0.23.4
+  - bwa=0.7.18
+  - samtools=1.21
+  - bcftools=1.21
+  - pyyaml=6.0.3
+  - pytest=9.2.0
+  - pytest-cov=7.1.0

@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -el {0}   # login shell so the micromamba env is active
+
+jobs:
+  verify:
+    name: Verify pipeline (unit · smoke · negative · regression · performance)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up pinned environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: envs/environment.yml
+          cache-environment: true
+
+      - name: Record tool versions
+        run: |
+          snakemake --version; fastp --version; samtools --version | head -1; bcftools --version | head -1
+
+      - name: Unit tests + coverage
+        run: pytest tests/unit --cov=vvdemo --cov-report=term-missing --cov-report=xml:reports/coverage.xml
+
+      - name: Full verification suite
+        run: pytest --junitxml=reports/junit.xml
+
+      - name: Traceability matrix (release gate)
+        if: always()
+        run: |
+          python scripts/build_traceability.py
+          cat docs/traceability_matrix.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-evidence-${{ github.sha }}
+          path: |
+            reports/
+            docs/traceability_matrix.md
+
+  regression-power:
+    # "Testing the tests": a known-harmful change MUST make the regression suite fail.
+    # This job passes only if the suite catches CR-001.
+    name: Regression suite catches harmful change (CR-001)
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: envs/environment.yml
+          cache-environment: true
+      - name: Run CR-001 impact assessment
+        run: |
+          bash scripts/demo_regression_catch.sh
+          cat reports/CR-001_impact.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: CR-001-impact-${{ github.sha }}
+          path: reports/CR-001_*

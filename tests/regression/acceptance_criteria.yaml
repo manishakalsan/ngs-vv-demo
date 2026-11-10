@@ -1,0 +1,11 @@
+# LOCKED acceptance criteria. Changing this file requires a documented
+# change request and re-approval (see docs/test_plan.md, section 6).
+# Thresholds were set from requirements, then confirmed on the baseline run
+# of v1.0.0 (2026-11-10); they are not tuned to whatever the pipeline produced.
+version: 1
+thresholds:
+  SNV:   {min_ppa: 0.99, min_ppv: 0.99}
+  INDEL: {min_ppa: 0.95, min_ppv: 0.95}
+# Regression tolerance vs the locked baseline in baseline_metrics.json:
+# a release may not lose more than this much PPA/PPV in any class.
+max_drop_vs_baseline: 0.01

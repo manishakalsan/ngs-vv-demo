@@ -1,0 +1,33 @@
+# Pipeline configuration (synthetic test dataset).
+# Every field here is under change control: a change that can alter calls
+# must be followed by the regression suite (see docs/test_plan.md, section 6).
+
+pipeline_version: "1.0.0"
+
+samples:
+  SYNTH1:
+    r1: data/synthetic/sample_R1.fastq.gz
+    r2: data/synthetic/sample_R2.fastq.gz
+
+reference: data/synthetic/ref.fa
+# Genome-build guard (REQ-003): "NAME:LENGTH" entries that must be present.
+# A list (not a mapping) so a --configfile replaces it rather than merging.
+expected_contigs: ["synth1:30000"]
+
+truth_vcf: data/synthetic/truth.vcf
+confident_bed: data/synthetic/confident.bed
+# Optional: restrict calling to these regions (used in GIAB mode).
+target_bed: null
+
+outdir: results
+threads: 2
+
+fastp:
+  qualified_quality: 20
+  min_length: 50
+
+caller:
+  min_mapq: 20
+  min_baseq: 20
+  min_qual: 20       # calls below this get FILTER=LowQual
+  call_indels: true  # setting false is the "breaking change" used in the regression demo

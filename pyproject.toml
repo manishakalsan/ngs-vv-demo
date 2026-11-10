@@ -1,0 +1,26 @@
+[project]
+name = "vvdemo"
+version = "1.0.0"
+description = "Helper library and tests for a verified mini variant-calling pipeline"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra --strict-markers"
+markers = [
+    "req(*ids): requirement IDs this test verifies (feeds the traceability matrix)",
+    "unit: fast tests of single functions",
+    "smoke: pipeline is alive end to end",
+    "negative: invalid input must fail safely",
+    "regression: accuracy and output must not change unexpectedly",
+    "performance: runtime and resource checks",
+]
+
+[tool.coverage.run]
+source = ["vvdemo"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90

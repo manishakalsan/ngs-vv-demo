@@ -1,0 +1,12 @@
+results/
+results_*/
+.snakemake/
+reports/
+data/giab/
+.pytest_cache/
+.coverage
+coverage.xml
+__pycache__/
+*.pyc
+.DS_Store
+data/synthetic/*.fai

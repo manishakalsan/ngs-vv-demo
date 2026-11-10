@@ -1,0 +1,8 @@
+# Variants that must ALWAYS be reported (REQ-008). In a real assay these would be
+# the clinically actionable variants the product claims to detect; here they are
+# stand-ins chosen to cover each class and genotype.
+#CHROM	POS	REF	ALT	GT	class	reason
+synth1	6347	G	A	1/1	SNV	homozygous SNV
+synth1	21988	T	C	0/1	SNV	heterozygous SNV
+synth1	10618	TTGCGGC	T	0/1	INDEL	6 bp deletion (largest deletion in set)
+synth1	16892	A	ACGTGAC	0/1	INDEL	6 bp insertion (largest insertion in set)

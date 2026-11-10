@@ -1,0 +1,10 @@
+# Proposed change CR-001 (deliberately harmful, used to demonstrate the
+# regression suite): "skip indel calling to speed up mpileup".
+# Loaded on top of config/config.yaml; only the keys below change.
+pipeline_version: "1.1.0-rc1"
+outdir: results_v1.1
+caller:
+  min_mapq: 20
+  min_baseq: 20
+  min_qual: 20
+  call_indels: false
